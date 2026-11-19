@@ -3,20 +3,35 @@ from io import TextIOWrapper
 from pathlib import Path
 from typing import Literal
 
-
 SENTENCE_FILE = Path('sentences.txt')
 
-def open_sentence_file(mode: Literal['r', 'w', 'a']):
+def open_sentence_file(mode: Literal['r', 'w', 'a']) -> TextIOWrapper:
     return open(SENTENCE_FILE, mode, encoding='utf-8')
 
-def file_init():
+def create_sentence_file():
+    pass
+
+def read_sentences(existing_sentences):
+    sentences = []
+    for sentence in existing_sentences.splitline():
+        sentences.append(sentence)
+    return sentences
+
+
+def get_file_sentences(premade_sentences: list):
     try:
-        with open(SENTENCE_FILE, encoding='utf-8') as f:
-            sentences = f.read()
-        print(sentences)
+        with open_sentence_file('r') as f:
+            existing_sentences = f.read()
+        print('Using existing sentence file')
+        if existing_sentences:
+            print('Using existing sentences')
+            sentences = read_sentences(existing_sentences)
+        else:
+            print('Filling in premade sentences')
+            sentences = premade_sentences
     except FileNotFoundError:
-        print('Sentence file ')
-        #with open()
+        print('Creating sentence file')
+        with open_sentence_file('w') as f:
 
 
 
@@ -44,7 +59,8 @@ def sentence_checker():
     print(sentence)
 
 def main():
-    sentence_list = ['the quick brown fox jumps over the lazy dog', 'the five boxing wizards jump quickly', 'sphinx of black quartz judge my vow']
+    premade_sentences = ['the quick brown fox jumps over the lazy dog', 'the five boxing wizards jump quickly', 'sphinx of black quartz judge my vow']
+    sentences = get_file_sentences(premade_sentences)
     menu_choice = ask_question_with_answers('---Typing Speed Tester\nWhat would you like to do?:\n1. List current sentences\n2. Add a sentence\n3. Begin test\nChoose an option', ['1.', '2.', '3.', '1', '2', '3'])
     match menu_choice:
         case '1.' | '1':
