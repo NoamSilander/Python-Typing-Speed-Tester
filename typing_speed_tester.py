@@ -1,11 +1,13 @@
 import time
+from io import TextIOWrapper
 from pathlib import Path
+from typing import Literal
+
 
 SENTENCE_FILE = Path('sentences.txt')
 
-def open_sentence_file(mode: str):
-    with open(SENTENCE_FILE, 'mode', encoding='utf-8') as f:
-        pass
+def open_sentence_file(mode: Literal['r', 'w', 'a']):
+    return open(SENTENCE_FILE, mode, encoding='utf-8')
 
 def file_init():
     try:
